@@ -1,0 +1,7 @@
+.vs/
+bin/
+obj/
+*.DotSettings.user
+.idea/
+packages/
+artifacts/
