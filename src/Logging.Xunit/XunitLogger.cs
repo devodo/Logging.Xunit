@@ -1,38 +1,50 @@
 ﻿using System;
 using System.IO;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Logging.Abstractions;
 using Xunit.Abstractions;
 
 namespace Logging.Xunit
 {
     /// <summary>
+    /// An Xunit <see cref="ILogger"/> implementation that writes logs to an <see cref="ITestOutputHelper"/>.
+    /// 
     /// Based on: https://github.com/dotnet/runtime/blob/release/7.0/src/libraries/Microsoft.Extensions.Logging.Console/src/ConsoleLogger.cs
     /// </summary>
-    public sealed class XunitLogger : ILogger
+    public class XunitLogger : ILogger
     {
         private readonly string _name;
-        private readonly IExternalScopeProvider _scopeProvider;
         private readonly ITestOutputHelper _testOutputHelper;
         private readonly IXunitFormatter _formatter;
-
+        
+        /// <summary>
+        /// Instantiate an <see cref="XunitLogger"/> instance.
+        /// </summary>
+        /// <param name="name">The category name for messages produced by the logger.</param>
+        /// <param name="formatter">The log message formatter.</param>
+        /// <param name="scopeProvider">The scope provider.</param>
+        /// <param name="testOutputHelper">The Xunit output helper that logs are written to.</param>
         public XunitLogger(string name, IXunitFormatter formatter, IExternalScopeProvider scopeProvider, ITestOutputHelper testOutputHelper)
         {
             _name = name;
             _formatter = formatter;
-            _scopeProvider = scopeProvider;
+            ScopeProvider = scopeProvider;
             _testOutputHelper = testOutputHelper;
         }
-
-        public IDisposable BeginScope<TState>(TState state) where TState : notnull => _scopeProvider.Push(state);
-
+        
+        internal IExternalScopeProvider ScopeProvider { get; set; }
+        
+        /// <inheritdoc />
+        public IDisposable BeginScope<TState>(TState state) where TState : notnull => ScopeProvider.Push(state);
+        
+        /// <inheritdoc />
         public bool IsEnabled(LogLevel logLevel)
         {
             return logLevel != LogLevel.None;
         }
         
         [ThreadStatic] private static StringWriter? _stringWriter;
-
+        
+        /// <inheritdoc />
         public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception? exception, Func<TState, Exception?, string> formatter)
         {
             if (!IsEnabled(logLevel))
@@ -43,7 +55,7 @@ namespace Logging.Xunit
             _stringWriter ??= new StringWriter();
             var logEntry = new LogEntry<TState>(logLevel, _name, eventId, state, exception, formatter);
             
-            _formatter.Write(in logEntry, _scopeProvider, _stringWriter);
+            _formatter.Write(in logEntry, ScopeProvider, _stringWriter);
 
             var sb = _stringWriter.GetStringBuilder();
             
