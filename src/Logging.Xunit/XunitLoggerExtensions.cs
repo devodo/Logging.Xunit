@@ -14,9 +14,9 @@ public static class XunitLoggerExtensions
     /// </summary>
     /// <param name="builder">The builder.</param>
     /// <param name="outputHelper">The Xunit output helper that logs are written to.</param>
-    /// <param name="options">The logging options.</param>
+    /// <param name="options">The logging options. If not provided the default options are used.</param>
     /// <returns>The input builder.</returns>
-    public static ILoggingBuilder AddXunit(this ILoggingBuilder builder, ITestOutputHelper outputHelper, XunitLoggerOptions options)
+    public static ILoggingBuilder AddXunit(this ILoggingBuilder builder, ITestOutputHelper outputHelper, XunitLoggerOptions? options = null)
     {
         if (builder == null)
         {
@@ -28,25 +28,9 @@ public static class XunitLoggerExtensions
             throw new ArgumentNullException(nameof(outputHelper));
         }
         
-        if (options == null)
-        {
-            throw new ArgumentNullException(nameof(options));
-        }
-        
-        return builder.AddProvider(new XunitLoggerProvider(outputHelper, options));
+        return builder.AddProvider(new XunitLoggerProvider(outputHelper, options ?? new XunitLoggerOptions()));
     }
-    
-    /// <summary>
-    /// Add an <see cref="XunitLoggerProvider"/> to the <see cref="ILoggingBuilder"/> using default <see cref="XunitLoggerOptions"/>.
-    /// </summary>
-    /// <param name="builder">The builder.</param>
-    /// <param name="outputHelper">The Xunit output helper that logs are written to.</param>
-    /// <returns>The input builder.</returns>
-    public static ILoggingBuilder AddXunit(this ILoggingBuilder builder, ITestOutputHelper outputHelper)
-    {
-        return builder.AddXunit(outputHelper, new XunitLoggerOptions());
-    }
-    
+
     /// <summary>
     /// Add an <see cref="XunitLoggerProvider"/> to the <see cref="ILoggingBuilder"/>.
     /// </summary>
@@ -54,15 +38,10 @@ public static class XunitLoggerExtensions
     /// <param name="outputHelper">The Xunit output helper that logs are written to.</param>
     /// <param name="configure">A delegate to configure the <see cref="XunitLoggerOptions"/>.</param>
     /// <returns>The input builder.</returns>
-    public static ILoggingBuilder AddXunit(this ILoggingBuilder builder, ITestOutputHelper outputHelper, Action<XunitLoggerOptions> configure)
+    public static ILoggingBuilder AddXunit(this ILoggingBuilder builder, ITestOutputHelper outputHelper, Action<XunitLoggerOptions>? configure)
     {
-        if (configure == null)
-        {
-            throw new ArgumentNullException(nameof(configure));
-        }
-        
         var options = new XunitLoggerOptions();
-        configure.Invoke(options);
+        configure?.Invoke(options);
         
         return builder.AddXunit(outputHelper, options);
     }

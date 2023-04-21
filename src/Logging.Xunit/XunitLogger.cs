@@ -10,7 +10,7 @@ namespace Logging.Xunit
     /// 
     /// Based on: https://github.com/dotnet/runtime/blob/release/7.0/src/libraries/Microsoft.Extensions.Logging.Console/src/ConsoleLogger.cs
     /// </summary>
-    public class XunitLogger : ILogger
+    internal sealed class XunitLogger : ILogger
     {
         private readonly string _name;
         private readonly ITestOutputHelper _testOutputHelper;

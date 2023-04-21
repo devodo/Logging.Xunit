@@ -208,18 +208,9 @@ public class XunitLoggerTests
         return logs;
     }
     
-    private static ILogger<T> CreateLogger<T>(ITestOutputHelper testOutputHelper, Action<XunitLoggerOptions>? optionsAction = null)
+    private static ILogger<T> CreateLogger<T>(ITestOutputHelper outputHelper, Action<XunitLoggerOptions>? configure = null)
     {
-        XunitLoggerOptions? options = null;
-
-        if (optionsAction is not null)
-        {
-            options = new XunitLoggerOptions();
-            optionsAction.Invoke(options);
-        }
-        
-        using var loggerFactory = LoggerFactory.Create(builder =>
-            builder.AddProvider(new XunitLoggerProvider(testOutputHelper, options)));
+        using var loggerFactory = LoggerFactory.Create(builder => builder.AddXunit(outputHelper, configure));
 
         return loggerFactory.CreateLogger<T>();
     }

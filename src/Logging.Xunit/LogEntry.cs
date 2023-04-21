@@ -2,6 +2,7 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 
 // Copied from: https://raw.githubusercontent.com/dotnet/runtime/release/7.0/src/libraries/Microsoft.Extensions.Logging.Abstractions/src/LogEntry.cs
+// Copying to avoid requiring a dependency on a later version of Microsoft.Extensions.Logging.Abstractions as the LogEntry type was only introduced in v5.0.0. 
 
 using System;
 using Microsoft.Extensions.Logging;
@@ -11,7 +12,7 @@ namespace Logging.Xunit
     /// <summary>
     /// Holds the information for a single log entry.
     /// </summary>
-    public readonly struct LogEntry<TState>
+    internal readonly struct LogEntry<TState>
     {
         /// <summary>
         /// Initializes an instance of the LogEntry struct.

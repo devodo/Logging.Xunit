@@ -6,7 +6,7 @@ namespace Logging.Xunit;
 /// <summary>
 /// Interface for custom log messages formatting.
 /// </summary>
-public interface IXunitFormatter
+internal interface IXunitFormatter
 {
     /// <summary>
     /// Writes the log message to the specified TextWriter.
