@@ -210,7 +210,12 @@ public class XunitLoggerTests
     
     private static ILogger<T> CreateLogger<T>(ITestOutputHelper outputHelper, Action<XunitLoggerOptions>? configure = null)
     {
+#if NET472
+        using var loggerFactory = new LoggerFactory();
+        loggerFactory.AddXunit(outputHelper, configure);
+#else
         using var loggerFactory = LoggerFactory.Create(builder => builder.AddXunit(outputHelper, configure));
+#endif
 
         return loggerFactory.CreateLogger<T>();
     }

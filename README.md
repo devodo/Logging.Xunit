@@ -3,7 +3,9 @@
 [![nuget](https://img.shields.io/nuget/v/Devodo.Logging.Xunit.svg)](https://www.nuget.org/packages/Devodo.Logging.Xunit)
 [![build](https://github.com/devodo/Logging.Xunit/actions/workflows/build.yml/badge.svg)](https://github.com/devodo/Logging.Xunit/actions/workflows/build.yml)
 
-A Microsoft.Extensions.Logging adapter for xUnit test output
+A Microsoft.Extensions.Logging adapter for xUnit test output.
+
+The log output format and config options are based on the [SimpleConsoleFormatter](https://learn.microsoft.com/en-us/dotnet/api/microsoft.extensions.logging.consoleloggerextensions.addsimpleconsole) from [Microsoft.Extensions.Logging.Console](https://www.nuget.org/packages/Microsoft.Extensions.Logging.Console/).
 
 # Installing
 
@@ -70,8 +72,19 @@ public class ExampleTests
 }
 ```
 
-The test above outputs the following:
+The output from the test above is:
 ```
 info: Program[0]
       Handling echo request with input: hello xunit logging
+```
+
+Additional format options can be configured:
+```csharp
+logging.AddXunit(_outputHelper, options =>
+{
+    options.IncludeScopes = true;
+    options.TimestampFormat = "HH:mm:ss ";
+    options.SingleLine = false;
+    options.UseUtcTimestamp = true;
+});
 ```
