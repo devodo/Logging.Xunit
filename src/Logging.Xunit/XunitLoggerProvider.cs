@@ -13,8 +13,8 @@ public class XunitLoggerProvider : ILoggerProvider, ISupportExternalScope
     private readonly ConcurrentDictionary<string, XunitLogger> _loggers = new();
     private readonly ITestOutputHelper _outputHelper;
     private readonly IXunitFormatter _formatter;
-    
-    private IExternalScopeProvider _scopeProvider = new LoggerExternalScopeProvider();
+
+    private IExternalScopeProvider _scopeProvider = NullExternalScopeProvider.Instance;
     
     /// <summary>
     /// Instantiate an <see cref="XunitLoggerProvider"/> instance.

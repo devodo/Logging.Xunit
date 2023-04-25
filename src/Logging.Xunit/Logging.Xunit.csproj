@@ -3,11 +3,11 @@
     <PropertyGroup>
         <Title>Devodo.Logging.Xunit</Title>
         <Authors>David Naylor</Authors>
-        <Description>A Microsoft.Extensions.Logging adapter for xUnit test output</Description>
+        <Description>An xUnit Microsoft.Extensions.Logging.ILoggerProvider that writes logs to the test output with formatting based on Microsoft.Extensions.Logging.Console.SimpleConsoleFormatter</Description>
         <Copyright>MIT Copyright (c) David Naylor</Copyright>
         <PackageProjectUrl>https://github.com/devodo/Logging.Xunit</PackageProjectUrl>
         <PublishRepositoryUrl>https://github.com/devodo/Logging.Xunit</PublishRepositoryUrl>
-        <PackageTags>xunit logging logger log</PackageTags>
+        <PackageTags>xunit logging logger log loggerprovider</PackageTags>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <RepositoryType>git</RepositoryType>
         <PackageId>Devodo.Logging.Xunit</PackageId>

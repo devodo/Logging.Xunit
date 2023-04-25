@@ -3,9 +3,9 @@
 [![nuget](https://img.shields.io/nuget/v/Devodo.Logging.Xunit.svg)](https://www.nuget.org/packages/Devodo.Logging.Xunit)
 [![build](https://github.com/devodo/Logging.Xunit/actions/workflows/build.yml/badge.svg)](https://github.com/devodo/Logging.Xunit/actions/workflows/build.yml)
 
-A Microsoft.Extensions.Logging adapter for xUnit test output.
+An xUnit `Microsoft.Extensions.Logging.ILoggerProvider` that writes logs to the test output.
 
-The log output format and config options are based on the [SimpleConsoleFormatter](https://learn.microsoft.com/en-us/dotnet/api/microsoft.extensions.logging.consoleloggerextensions.addsimpleconsole) from [Microsoft.Extensions.Logging.Console](https://www.nuget.org/packages/Microsoft.Extensions.Logging.Console/).
+Its formatting and its configuration is based on the `Microsoft.Extensions.Logging.Console.SimpleConsoleFormatter` created from the [ConsoleLoggerExtensions.AddSimpleConsole Method](https://learn.microsoft.com/en-us/dotnet/api/microsoft.extensions.logging.consoleloggerextensions.addsimpleconsole).
 
 # Installing
 
@@ -38,7 +38,7 @@ app.MapGet("/echo/{message}", (string message, ILogger<Program> logger) =>
 app.Run();
 ```
 
-Log output can be captured in Xunit tests as follows:
+The application logs can be sent to xUnit test output as follows:
 
 ```csharp
 public class ExampleTests
@@ -78,7 +78,7 @@ info: Program[0]
       Handling echo request with input: hello xunit logging
 ```
 
-Additional format options can be configured:
+The following format options can be configured:
 ```csharp
 logging.AddXunit(_outputHelper, options =>
 {
